@@ -1,0 +1,17 @@
+{% extends 'windows/template.xml' %}
+
+{% block title %}{{ super() }} open {% endblock title %}
+
+{% block content %}
+<label font=" arial 15">
+    Files
+</label>
+
+<frame row="1">
+    {% for idx, file in enumerate(files) %}
+        <button row="{{ idx }}" font="arial 20" width="20" height="2" command="animator.open('{{ file }}')">
+            {{ file }}
+        </button>
+        {% endfor %}
+</frame>
+{% endblock content %}

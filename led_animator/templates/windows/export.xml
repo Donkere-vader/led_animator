@@ -1,0 +1,14 @@
+{% extends 'windows/template.xml' %}
+
+{% block title %}{{ super() }}new{% endblock title %}
+
+{% block content %}
+
+<frame row="0">
+    <button command="animator.open('{{ animator.file_name }}')">Back</button>
+    <label row="1">Export</label>
+</frame>
+<text row="1" width="170" height="30">
+    {{ export }}
+</text>
+{% endblock content %}

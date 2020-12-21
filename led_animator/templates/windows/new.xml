@@ -1,0 +1,26 @@
+{% extends 'windows/template.xml' %}
+
+{% block title %}{{ super() }}new{% endblock title %}
+
+{% block content %}
+<label font=" arial 15">
+    New File
+</label>
+
+<label font=" arial 13" row="1" anchor="nw" justify="left" width="20">
+    File name:
+</label>
+<entry id="file_name" font="arial 13" row="2" width="20"></entry>
+
+<label font=" arial 13" row="3" anchor="nw" justify="left" width="20">
+    Height:
+</label>
+<entry id="matrix_height" font="arial 13" row="4" width="20"></entry>
+
+<label font=" arial 13" row="5" anchor="nw" justify="left" width="20">
+    Width:
+</label>
+<entry id="matrix_width" font="arial 13" row="6" width="20"></entry>
+
+<button row="7" command="animator.open_new_file()">Ok</button>
+{% endblock content %}

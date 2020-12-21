@@ -1,0 +1,8 @@
+# python
+__pycache__/
+
+# IDE
+.vscode
+
+# program specific
+saved_animations/

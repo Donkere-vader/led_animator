@@ -1,0 +1,16 @@
+<root title="Led animator{% block title %} - {% endblock title %}">
+    <menu>
+        <menu>
+            File
+            <command command="animator.open_file_window()">Open</command>
+            <command command="animator.open_new_file_window()">New</command>
+            <command command="animator.save()">Save</command>
+            <seperator />
+            <command command="animator.export()">Export</command>
+        </menu>
+    </menu>
+    <frame>
+        {% block content %}
+        {% endblock content %}
+    </frame>
+</root>

@@ -1,0 +1,32 @@
+{% extends 'windows/template.xml' %}
+
+{% block title %}{{ super() }}{{ animator.file_name }}{% endblock title %}
+
+{% block content %}
+<frame>
+    <label font=" arial 15">
+        Animation: {{ animator.file_name }}
+    </label>
+    <button column="1" id="toggle_preview_button" bg="green" fg="white" font="arial 10" command="animator.toggle_preview()">Play</button>
+</frame>
+
+
+<frame row="2">
+    {% for y in range(animator.matrix_dimensions[1]) %}
+        <frame row="{{ y }}">
+            {% for x in range(animator.matrix_dimensions[0]) %}
+                <button id="button_({{ x }}:{{ y }})" command="animator.pixel_pressed({{ x }}, {{ y }})" column="{{ x }}" border="1" bg="{% if animator.animation[animator.selected_frame][y][x] == 1 %}white{% else %}black{% endif %}" font="arial 15" width="3"></button>
+            {% endfor %}
+        </frame>
+    {% endfor %}
+</frame>
+
+<frame row="3">
+    <_frames>
+    </_frames>
+</frame>
+
+<frame row="4">
+    <entry id="play_speed_entry">{{ animator._play_speed }}</entry>
+</frame>
+{% endblock content %}

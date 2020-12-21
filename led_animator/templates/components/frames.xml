@@ -1,0 +1,14 @@
+<frame id="frames">
+    <label>Frames:</label>
+    <frame row="1">
+        {% for i in range(len(animator.animation)) %}
+            <button id="frame_button_{{ i }}" command="animator.select_frame({{ i }})" width="3" column="{{ i }}" {% if animator.selected_frame == i %}bg="black" fg="white"{% else %}bg="white"{% endif %}>
+                {{ i + 1 }}
+            </button>
+        {% endfor %}
+        <button width="3" column="{{ len(animator.animation) }}" command="animator.add_frame()">
+            +
+        </button>
+    </frame>
+    <button row="2" command="animator.delete_frame()">Delete frame</frame>
+</frame>
