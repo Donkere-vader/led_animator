@@ -1,0 +1,5 @@
+<frame column="1" id="colorpicker">
+    {% for idx, color in enumerate(COLORS) %}
+        <button width="2" font="arial 20" row="{{ idx }}" bg="{{ color }}" {% if animator.selected_color == color %} border="5" {% endif %} command="animator.select_color('{{ color }}')"> </button>
+    {% endfor %}
+</frame>

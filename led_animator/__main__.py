@@ -1,25 +1,53 @@
 from pygui import PyGui
+from .config import ARDUINO_PORT
 import json
 import os
 import copy
+import time
+import threading
+
+
+COLORS = {
+    "black": 0,
+    "white": 1,
+    "red": 2,
+    "green": 3,
+    "blue": 4,
+    "yellow": 5,
+    "teal": 6,
+    "orange": 7,
+    "brown": 8,
+    "purple": 9,
+    "grey": 10
+}
+
+def num_to_color(num):
+    for key in COLORS:
+        if COLORS[key] == num:
+            return key
 
 
 class Animator:
     def __init__(self):
         # gui
         self.pygui = PyGui(__name__)
-        self.pygui.set_globals(animator=self, len=len, enumerate=enumerate)
+        self.pygui.set_globals(animator=self, len=len, enumerate=enumerate, COLORS=COLORS, num_to_color=num_to_color)
         self.showing_window = None
 
         # editor
         self.selected_frame = 0
         self.play = False
+        self.selected_color = "black"
 
         # file
         self._play_speed = 1000  # ms before next frame
         self.animation = []
         self.matrix_dimensions = [0, 0]
         self.file_name = ""
+
+    def select_color(self, color):
+        self.selected_color = color
+        self.showing_window.reload("colorpicker")
 
     @property
     def play_speed(self):
@@ -65,7 +93,7 @@ class Animator:
     def save(self):
         json_obj = {
             "speed": self.play_speed,
-            "dimensions":  self.matrix_dimensions,
+            "dimensions": self.matrix_dimensions,
             "animation": self.animation
         }
         json.dump(
@@ -104,10 +132,9 @@ class Animator:
     def pixel_pressed(self, x, y):
         button = self.showing_window.get_item(f"button_({x}:{y})")
 
-        self.animation[self.selected_frame][y][x] = 1 if self.animation[
-            self.selected_frame][y][x] == 0 else 0
-        button.config(bg="white" if self.animation[
-            self.selected_frame][y][x] == 1 else "black")
+        self.animation[self.selected_frame][y][x] = COLORS[self.selected_color]
+
+        button.config(bg=num_to_color(self.animation[self.selected_frame][y][x]))
 
     def add_frame(self):
         self.animation.append(copy.deepcopy(self.animation[-1]))
@@ -127,8 +154,7 @@ class Animator:
             for x in range(self.matrix_dimensions[0]):
                 btn = self.showing_window.get_item(f"button_({x}:{y})")
                 btn.config(
-                    bg="black" if self.animation[
-                        self.selected_frame][y][x] == 0 else "white"
+                    bg=num_to_color(self.animation[self.selected_frame][y][x])
                 )
 
     def delete_frame(self):
@@ -156,13 +182,6 @@ class Animator:
         self.update_frame()
 
     def export(self):
-        if self.file_name == "":
-            return
-        self.save()
+        export = str(self.animation).replace("[", "{").replace("]", "}")
 
-        big_str = "".join(["".join([
-            "".join([str(item) for item in row]) for row in frame]
-            ) for frame in self.animation])
-        num = int(big_str, 2)
-        export = (len(self.animation), self.matrix_dimensions, num)
         self.open_window(self.pygui.construct("export", export=export))
